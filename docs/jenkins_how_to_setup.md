@@ -15,7 +15,7 @@ This template provides a starting point for setting up a **Continuous Integratio
 ## Getting Started
 
 1. **Prerequisites**:
-   - Ensure you have Jenkins installed and configured.
+   - Ensure you have Jenkins installed and configured completely.
    - Set up your version control repository (e.g., GitHub, GitLab).
    - Install any necessary plugins in Jenkins (e.g., Git plugin, Pipeline plugin).
 
