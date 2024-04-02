@@ -19,21 +19,16 @@ on:
             description: Environment name
             type: string
             required: true
-      sa_account_name:
-            description: Storage account name for data store
-            type: string
-            required: true
-            default: "sanamedrecognitionwe"
-      sa_container_name:
-            description: Container name for data store
-            type: string
-            required: true
-            default: "data"
       config_path_root_dir:
               description: Root dir for config file
               type: string
               required: true
               default: "named_entity_recognition"
+      sa_acc_key:
+                description: Storage account SAS
+                type: string
+                required: true
+                default: ""
 
   # workflow_dispatch allows to run workflow manually from the Actions tab
   workflow_dispatch:
@@ -59,17 +54,12 @@ on:
               type: string
               required: true
               default: "named_entity_recognition"
-      sa_account_name:
-              description: Storage account name required for creating datastore
-              type: string
-              required: true
-              default: "sanamedrecognitionwe"
-      sa_container_name:
-              description: Storage container name
-              type: string
-              required: true
-              default: "data"
-
+      sa_acc_key:
+                description: Storage account key
+                type: string
+                required: true
+                default: ""
+              
 jobs:
   deploy_aml_data_pipeline:
     runs-on: ubuntu-latest
@@ -108,7 +98,7 @@ jobs:
             --resource_group_name ${{ inputs.resource_group_name }} \
             --workspace_name ${{ inputs.workspace_name }} \
             --aml_env_name ${{ inputs.aml_env_name }} \
-            --config_path_root_dir ${{ inputs.config_path_root_dir }}
+            --config_path_root_dir ${{ inputs.config_path_root_dir }} 
 
       - name: Create data store
         uses: ./.github/actions/execute_script
@@ -119,9 +109,8 @@ jobs:
             --subscription_id ${{ inputs.subscription_id }} \
             --resource_group_name ${{ inputs.resource_group_name }} \
             --workspace_name ${{ inputs.workspace_name }} \
-            --sa_account_name ${{ inputs.sa_account_name }} \
-            --sa_container_name ${{ inputs.sa_container_name }} \
-            --config_path_root_dir ${{ inputs.config_path_root_dir }}
+            --config_path_root_dir ${{ inputs.config_path_root_dir }} \
+            --sa_acc_key ${{ inputs.sa_acc_key }} 
 
       - name: Register data asset
         uses: ./.github/actions/execute_script
@@ -132,6 +121,4 @@ jobs:
             --subscription_id ${{ inputs.subscription_id }} \
             --resource_group_name ${{ inputs.resource_group_name }} \
             --workspace_name ${{ inputs.workspace_name }} \
-            --sa_account_name ${{ inputs.sa_account_name }} \
-            --sa_container_name ${{ inputs.sa_container_name }} \
-            --config_path_root_dir ${{ inputs.config_path_root_dir }}
+            --config_path_root_dir ${{ inputs.config_path_root_dir }}      
