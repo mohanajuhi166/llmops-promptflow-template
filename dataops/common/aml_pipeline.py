@@ -69,7 +69,7 @@ def get_prep_data_component(
                 --assets_str {asset_str} 
                 """,
         environment=environment,
-        compute="serverless",
+        compute=custom_compute,
         identity=UserIdentityConfiguration()
     )
     prep_data_components.append(prep_data_component)

@@ -1,6 +1,6 @@
 {
     "DATA_STORE_NAME": "ner_data_store",
-    "COMPUTE_NAME": "mohanab2",
+    "COMPUTE_NAME": "mangocompute",
     "DATA_STORE_DESCRIPTION": "pipeline data store description for evaluation",
     "DATA_PREP_COMPONENT":
         {
@@ -27,12 +27,12 @@
         },
     "DATA_ASSETS":[
         {
-            "NAME": "ner_eval-testing-mohana9",
+            "NAME": "ner_eval-testing-mohana-ser",
             "PATH": "eval-testing-mohana-serverless.jsonl",
             "DESCRIPTION": "NER eval data asset"
         },
         {
-            "NAME": "ner_exp-testing-mohana9",
+            "NAME": "ner_exp-testing-mohana-ser",
             "PATH": "exp-testing-mohana-serverless.jsonl",
             "DESCRIPTION": "NER experiment data asset"
         }
