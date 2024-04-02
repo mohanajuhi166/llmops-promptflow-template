@@ -20,7 +20,6 @@ pipeline_components = []
 ()
 @pipeline(
     name="ner_data_prep_test",
-    compute_name= "serverless",
     description="data prep pipeline",
 )
 def ner_data_prep_pipeline(
@@ -70,7 +69,7 @@ def get_prep_data_component(
                 --assets_str {asset_str} 
                 """,
         environment=environment,
-        #compute=custom_compute,
+        compute="serverless",
         identity=UserIdentityConfiguration()
     )
     prep_data_components.append(prep_data_component)
