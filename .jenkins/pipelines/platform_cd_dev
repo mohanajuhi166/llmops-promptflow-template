@@ -1,11 +1,12 @@
+@Library('shared-library@feature/add-shared-library') _
 pipeline {
     agent any
 
 parameters {
         string(name: 'env_name', description: 'Execution Environment', defaultValue: 'dev')
         string(name: 'flow_type', description: 'The flow use-case to execute', defaultValue: 'named_entity_recognition')
-        string(name: 'deployment_type', description: 'Determine type of deployment - aml, aks, webapp', defaultValue: 'webapp')
-        string(name: 'run_id', description: 'run id of the flow to be deployed', defaultValue: 'named_entity_recognition_dev_20240318_162626_named_entity_recognition_train')
+        string(name: 'deployment_type', description: 'Determine type of deployment - aml, aks, webapp', defaultValue: 'aml')
+        string(name: 'run_id', description: 'run id of the flow to be deployed')
     }
 
     stages {
@@ -17,10 +18,10 @@ parameters {
 
         stage('Register flow as model in AzureML') {
             steps {
-                withCredentials([azureServicePrincipal('UNICREDIT_PVT_AZURE_CREDENTIALS')]) {
+                installRequirements('execute_job_requirements')
+                withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
                     withPythonEnv('/usr/bin/python3.9') {
                     sh """
-                    python -m pip install -r .jenkins/requirements/execute_job_requirements.txt
                     python -m llmops.common.deployment.register_model \
                     --subscription_id $AZURE_SUBSCRIPTION_ID \
                     --flow_to_execute $flow_type \
