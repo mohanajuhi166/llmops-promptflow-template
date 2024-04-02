@@ -17,11 +17,12 @@ on:
         type: string
         description: "Determine type of deployment - aml, aks, docker, webapp"
         required: true
-        default: "aks"
+        default: "webapp"
   push:
     branches:
       - main
       - development
+      - jenkins-template
     paths:
       - '.github/**'
       - 'llmops/**'
