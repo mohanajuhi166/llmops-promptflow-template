@@ -54,7 +54,7 @@ read -r -a connection_names <<< "$(echo "$con_object" | jq -r '.CONNECTION_NAMES
 echo $connection_names
 
 # create a resource group
-az group create --name $rgname --location eastus
+az group create --name $rgname --location westeurope
 
 # create a user managed identifier      
 az identity create --name $udmid --resource-group $rgname
@@ -79,14 +79,14 @@ az webapp config appsettings set --resource-group $rgname --name $appserviceweb 
     --settings WEBSITES_PORT=8080
 
 for name in "${connection_names[@]}"; do
-    api_key=$(echo $connection_details | jq -r --arg name "$name" '.[] | select(.name == $name) | .api_key')
+    api_key=$(echo ${CONNECTION_DETAILS} name "$name" '.[] | select(.name == $name) | .api_key')
 
     uppercase_name=$(echo "$name" | tr '[:lower:]' '[:upper:]')
     modified_name="${uppercase_name}_API_KEY"
     az webapp config appsettings set \
         --resource-group $rgname \
         --name $appserviceweb \
-        --settings $modified_name=$api_key
+        --settings $modified_name=$api_keyNNN
 done
 
 # Assign user managed identifier to Web APp
