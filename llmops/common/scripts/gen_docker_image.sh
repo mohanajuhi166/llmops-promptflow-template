@@ -85,10 +85,10 @@ if [[ -n "$selected_object" ]]; then
     python -m llmops.common.deployment.test_local_flow \
             --flow_to_execute $flow_to_execute
 
-    registry_name=$(echo "$registry_details" | jq -r '.[0].registry_name')
-    registry_server=$(echo "$registry_details" | jq -r '.[0].registry_server')
-    registry_username=$(echo "$registry_details" | jq -r '.[0].registry_username')
-    registry_password=$(echo "$registry_details" | jq -r '.[0].registry_password')
+    registry_name=$(echo "${REGISTRY_DETAILS}" | jq -r '.[0].registry_name')
+    registry_server=$(echo "${REGISTRY_DETAILS}" | jq -r '.[0].registry_server')
+    registry_username=$(echo "${REGISTRY_DETAILS}" | jq -r '.[0].registry_username')
+    registry_password=$(echo "${REGISTRY_DETAILS}" | jq -r '.[0].registry_password')
 
     docker login "$registry_server" -u "$registry_username" --password-stdin <<< "$registry_password"
     docker tag localpf "$registry_server"/"$flow_to_execute"_"$deploy_environment":"$build_id"
