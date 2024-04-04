@@ -26,7 +26,7 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         --CONNECTION_DETAILS)
-            connection_details="$2"
+            CONNECTION_DETAILS="$2"
             shift 2
             ;;
         *)
