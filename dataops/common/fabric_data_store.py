@@ -4,7 +4,7 @@ This module registers the data store.
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.entities import OneLakeDatastore, \
-    OneLakeArtifact
+    OneLakeArtifact, ServicePrincipalConfiguration
 import os
 import argparse
 import json
@@ -33,11 +33,18 @@ def register_data_store(
         onelake_artifact_name,
         aml_client
 ):
+    # Get the AZURE_CREDENTIALS from environment variables
+    azure_credentials = os.getenv('AZURE_CREDENTIALS')
+
+    # Parse the JSON string
+    credentials_dict = json.loads(azure_credentials)
     store = OneLakeDatastore(
         name=name_datastore,
         description=description,
         one_lake_workspace_name=onelake_workspace_name,
         endpoint=onelake_endpoint,
+        credentials=ServicePrincipalConfiguration(client_id=credentials_dict.get('client_id'),
+                                                  client_secret=credentials_dict.get('client_secret')),
         artifact=OneLakeArtifact(
         name=onelake_artifact_name,
         type="lake_house"
