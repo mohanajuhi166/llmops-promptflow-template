@@ -40,7 +40,8 @@ def register_data_store(
         one_lake_workspace_name=onelake_workspace_name,
         endpoint=onelake_endpoint,
         credentials=ServicePrincipalConfiguration(client_id=os.getenv('CLIENT_ID'),
-                                                  client_secret=os.getenv('CLIENT_SECRET')),
+                                                  client_secret=os.getenv('CLIENT_SECRET'),
+                                                  tenant_id="3c863c9b-2221-4236-88c3-37fe9e1d06f8"),
         artifact=OneLakeArtifact(
         name=onelake_artifact_name,
         type="lake_house"
