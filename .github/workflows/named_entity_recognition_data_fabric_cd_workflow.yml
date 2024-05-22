@@ -99,6 +99,7 @@ jobs:
             --subscription_id ${{ inputs.subscription_id }} \
             --resource_group_name ${{ inputs.resource_group_name }} \
             --workspace_name ${{ inputs.workspace_name }} \
+            --credentials ${{ secrets.AZURE_CREDENTIALS }} \
             --config_path_root_dir ${{ inputs.config_path_root_dir }} 
 
 #      - name: Register data asset

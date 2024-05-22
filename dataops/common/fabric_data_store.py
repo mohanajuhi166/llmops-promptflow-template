@@ -31,17 +31,25 @@ def register_data_store(
         onelake_workspace_name,
         onelake_endpoint,
         onelake_artifact_name,
-        aml_client
+        aml_client,
+        credentials
 ):
+
+    credentials_dict = json.loads(credentials)
+
+    # Extract the client_id, client_secret and tenant_id
+    client_id = credentials_dict.get('clientId')
+    client_secret = credentials_dict.get('clientSecret')
+    tenant_id = credentials_dict.get('tenantId')
 
     store = OneLakeDatastore(
         name=name_datastore,
         description=description,
         one_lake_workspace_name=onelake_workspace_name,
         endpoint=onelake_endpoint,
-        credentials=ServicePrincipalConfiguration(client_id="681c93c1-6376-4beb-9d29-cc56131d0a12",
-                                                  client_secret=os.getenv('CLIENT_SECRET'),
-                                                  tenant_id="3c863c9b-2221-4236-88c3-37fe9e1d06f8"),
+        credentials=ServicePrincipalConfiguration(client_id=client_id,
+                                                  client_secret=client_secret,
+                                                  tenant_id=tenant_id),
         artifact=OneLakeArtifact(
         name=onelake_artifact_name,
         type="lake_house"
@@ -76,6 +84,12 @@ def main():
         help="Root dir for config file",
         required=True,
     )
+    parser.add_argument(
+        "--credentials",
+        type=str,
+        help="azure credentials",
+        required=True,
+    )
 
     args = parser.parse_args()
 
@@ -83,6 +97,7 @@ def main():
     resource_group_name = args.resource_group_name
     workspace_name = args.workspace_name
     config_path_root_dir = args.config_path_root_dir
+    credentials = args.credentials
 
     config_path = os.path.join(os.getcwd(), f"{config_path_root_dir}/configs/dataops_config.json")
     config = json.load(open(config_path))
@@ -104,7 +119,8 @@ def main():
         onelake_workspace_name=onelake_workspace_name,
         onelake_endpoint=onelake_endpoint,
         onelake_artifact_name = onelake_artifact_name,
-        aml_client=aml_client
+        aml_client=aml_client,
+        credentials=credentials
     )
 
 if __name__ == "__main__":
