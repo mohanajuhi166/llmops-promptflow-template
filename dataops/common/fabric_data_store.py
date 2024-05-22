@@ -32,15 +32,16 @@ def register_data_store(
         onelake_endpoint,
         onelake_artifact_name,
         aml_client,
-        credentials
+        client_id,
+        client_secret
 ):
 
-    credentials_dict = json.loads(credentials)
+    #credentials_dict = json.loads(credentials)
 
     # Extract the client_id, client_secret and tenant_id
-    client_id = credentials_dict.get('clientId')
-    client_secret = credentials_dict.get('clientSecret')
-    tenant_id = credentials_dict.get('tenantId')
+    #client_id = credentials_dict.get('clientId')
+    #client_secret = credentials_dict.get('clientSecret')
+    tenant_id = "3c863c9b-2221-4236-88c3-37fe9e1d06f8"
 
     store = OneLakeDatastore(
         name=name_datastore,
@@ -85,9 +86,16 @@ def main():
         required=True,
     )
     parser.add_argument(
-        "--credentials",
+        "--client_id",
         type=str,
-        help="azure credentials",
+        help="azure client id credentials",
+        required=True,
+    )
+
+    parser.add_argument(
+        "--client_secret",
+        type=str,
+        help="azure client secret credentials",
         required=True,
     )
 
@@ -97,7 +105,8 @@ def main():
     resource_group_name = args.resource_group_name
     workspace_name = args.workspace_name
     config_path_root_dir = args.config_path_root_dir
-    credentials = args.credentials
+    client_id = args.client_id
+    client_secret = args.client_secret
 
     config_path = os.path.join(os.getcwd(), f"{config_path_root_dir}/configs/dataops_config.json")
     config = json.load(open(config_path))
@@ -120,7 +129,8 @@ def main():
         onelake_endpoint=onelake_endpoint,
         onelake_artifact_name = onelake_artifact_name,
         aml_client=aml_client,
-        credentials=credentials
+        client_id=client_id,
+        client_secret=client_secret
     )
 
 if __name__ == "__main__":

@@ -100,7 +100,8 @@ jobs:
             --resource_group_name ${{ inputs.resource_group_name }} \
             --workspace_name ${{ inputs.workspace_name }} \
             --config_path_root_dir ${{ inputs.config_path_root_dir }} \
-            --credentials ${{ secrets.azure_credentials }} 
+            --client_id ${{ secrets.client_id }} \
+            --client_secret ${{ secrets.client_secret }}
 
 #      - name: Register data asset
 #        uses: ./.github/actions/execute_script
