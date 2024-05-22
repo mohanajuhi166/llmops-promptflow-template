@@ -99,8 +99,8 @@ jobs:
             --subscription_id ${{ inputs.subscription_id }} \
             --resource_group_name ${{ inputs.resource_group_name }} \
             --workspace_name ${{ inputs.workspace_name }} \
-            --credentials ${{ secrets.AZURE_CREDENTIALS }} \
-            --config_path_root_dir ${{ inputs.config_path_root_dir }} 
+            --config_path_root_dir ${{ inputs.config_path_root_dir }} \
+            --credentials ${{ secrets.AZURE_CREDENTIALS }} 
 
 #      - name: Register data asset
 #        uses: ./.github/actions/execute_script
