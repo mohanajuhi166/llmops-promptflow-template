@@ -33,33 +33,21 @@ def register_data_store(
         onelake_artifact_name,
         aml_client
 ):
-    # Get the AZURE_CREDENTIALS from environment variables
-    azure_credentials = os.getenv('AZURE_CREDENTIALS')
 
-    if azure_credentials and isinstance(azure_credentials, str):
-        # Parse the JSON string
-        credentials_dict = json.loads(azure_credentials)
+    store = OneLakeDatastore(
+        name=name_datastore,
+        description=description,
+        one_lake_workspace_name=onelake_workspace_name,
+        endpoint=onelake_endpoint,
+        credentials=ServicePrincipalConfiguration(client_id=os.getenv('CLIENT_ID'),
+                                                  client_secret=os.getenv('CLIENT_SECRET')),
+        artifact=OneLakeArtifact(
+        name=onelake_artifact_name,
+        type="lake_house"
+    )
+    )
 
-        # Extract the client_id and client_secret
-        client_id = credentials_dict.get('clientId')
-        client_secret = credentials_dict.get('clientSecret')
-        store = OneLakeDatastore(
-            name=name_datastore,
-            description=description,
-            one_lake_workspace_name=onelake_workspace_name,
-            endpoint=onelake_endpoint,
-            credentials=ServicePrincipalConfiguration(client_id=client_id,
-                                                      client_secret=client_secret),
-            artifact=OneLakeArtifact(
-                name=onelake_artifact_name,
-                type="lake_house"
-            )
-        )
-
-        aml_client.create_or_update(store)
-    else:
-        print("AZURE_CREDENTIALS is not set or not a string.")
-
+    aml_client.create_or_update(store)
 
 def main():
     parser = argparse.ArgumentParser()
