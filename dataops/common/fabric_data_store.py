@@ -5,6 +5,9 @@ from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.entities import OneLakeDatastore, \
     OneLakeArtifact, ServicePrincipalConfiguration
+from azure.ai.resources.client import AIClient
+from azure.ai.resources.entities import Data
+from azure.ai.resources.constants import AssetTypes
 import os
 import argparse
 import json
@@ -41,23 +44,36 @@ def register_data_store(
     # Extract the client_id, client_secret and tenant_id
     #client_id = credentials_dict.get('clientId')
     #client_secret = credentials_dict.get('clientSecret')
-    tenant_id = "3c863c9b-2221-4236-88c3-37fe9e1d06f8"
+    #tenant_id = "3c863c9b-2221-4236-88c3-37fe9e1d06f8"
 
-    store = OneLakeDatastore(
-        name=name_datastore,
-        description=description,
-        one_lake_workspace_name=onelake_workspace_name,
-        endpoint=onelake_endpoint,
-        credentials=ServicePrincipalConfiguration(client_id=client_id,
-                                                  client_secret=client_secret,
-                                                  tenant_id=tenant_id),
-        artifact=OneLakeArtifact(
-        name=onelake_artifact_name,
-        type="lake_house"
-    )
+    # store = OneLakeDatastore(
+    #     name=name_datastore,
+    #     description=description,
+    #     one_lake_workspace_name=onelake_workspace_name,
+    #     endpoint=onelake_endpoint,
+    #     credentials=ServicePrincipalConfiguration(client_id=client_id,
+    #                                               client_secret=client_secret,
+    #                                               tenant_id=tenant_id),
+    #     artifact=OneLakeArtifact(
+    #     name=onelake_artifact_name,
+    #     type="lake_house"
+    # )
+    # )
+    #
+    # aml_client.create_or_update(store)
+
+    ## AI Client
+    client = AIClient.from_config(DefaultAzureCredential())
+
+    path = "abfss://dataopstest@onelake.dfs.fabric.microsoft.com/datalakehousetest.Lakehouse/source.csv"
+
+    myfile = Data(
+        name="my-file-test-source",
+        path=path,
+        type=AssetTypes.URI_FILE
     )
 
-    aml_client.create_or_update(store)
+    client.data.create_or_update(myfile)
 
 def main():
     parser = argparse.ArgumentParser()
