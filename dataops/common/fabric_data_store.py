@@ -70,7 +70,7 @@ def register_data_store(
 
     ## AI Client
 
-    path = "abfss://data@dataopstest12345.dfs.core.windows.net/source.csv"
+    path = "wasb://data@dataopstest12345.dfs.core.windows.net/source.csv"
 
     myfile = Data(
         name="my-file-test-source-plz",
