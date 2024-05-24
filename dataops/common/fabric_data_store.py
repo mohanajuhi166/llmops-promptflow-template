@@ -70,7 +70,7 @@ def register_data_store(
 
     ## AI Client
 
-    path = "https://onelake.dfs.fabric.microsoft.com/dataopstest/datalakehousetest.Lakehouse/source.csv"
+    path = "wasb://source-data@stcolespublic.blob.core.windows.net/sales-csv/subfolder/sales.csv"
 
     myfile = Data(
         name="my-file-test-source1",
