@@ -26,7 +26,13 @@ def get_aml_client(
         workspace_name=workspace_name,
     )
 
-    return aml_client
+    client = AIClient(DefaultAzureCredential(),
+                      subscription_id=subscription_id,
+                      resource_group_name="copilot-microhack",
+                      ai_resource_name="dataops-mango")
+
+    #return aml_client
+    return client
 
 def register_data_store(
         name_datastore,
@@ -63,7 +69,6 @@ def register_data_store(
     # aml_client.create_or_update(store)
 
     ## AI Client
-    client = AIClient.from_config(DefaultAzureCredential())
 
     path = "abfss://dataopstest@onelake.dfs.fabric.microsoft.com/datalakehousetest.Lakehouse/source.csv"
 
@@ -73,7 +78,7 @@ def register_data_store(
         type=AssetTypes.URI_FILE
     )
 
-    client.data.create_or_update(myfile)
+    aml_client.data.create_or_update(myfile)
 
 def main():
     parser = argparse.ArgumentParser()
