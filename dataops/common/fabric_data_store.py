@@ -70,7 +70,7 @@ def register_data_store(
 
     ## AI Client
 
-    path = "azureml://subscriptions/78479cb4-e81a-4926-8c84-fa9c7784069b/resourcegroups/copilot-microhack/workspaces/dataops-mango/datastores/onelake_test1/paths/source.csv"
+    path = "abfss://data@dataopstest12345.dfs.core.windows.net/source.csv"
 
     myfile = Data(
         name="my-file-test-source-plz",
