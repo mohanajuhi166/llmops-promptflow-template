@@ -63,7 +63,7 @@ def register_data_store(
     # aml_client.create_or_update(store)
 
     ## AI Client
-    client = AIClient.from_config(DefaultAzureCredential(), path="../../config.json", file_name="../../config.json")
+    client = AIClient.from_config(DefaultAzureCredential(), file_name="config.json")
 
     path = "abfss://dataopstest@onelake.dfs.fabric.microsoft.com/datalakehousetest.Lakehouse/source.csv"
 
