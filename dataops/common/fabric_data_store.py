@@ -70,12 +70,12 @@ def register_data_store(
 
     ## AI Client
 
-    path = "https://onelake.dfs.fabric.microsoft.com/dataopstest/datalakehousetest.Lakehouse/"
+    path = "https://onelake.dfs.fabric.microsoft.com/dataopstest/datalakehousetest.Lakehouse/source.csv"
 
     myfile = Data(
-        name="my-file-test-source-folder",
+        name="my-file-test-source-plz",
         path=path,
-        type=AssetTypes.FOLDER
+        type=AssetTypes.FILE
     )
 
     aml_client.data.create_or_update(myfile)
