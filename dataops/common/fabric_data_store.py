@@ -75,7 +75,7 @@ def register_data_store(
     myfile = Data(
         name="my-file-test-source",
         path=path,
-        type=AssetTypes.URI_FILE
+        type=AssetTypes.FILE
     )
 
     aml_client.data.create_or_update(myfile)
