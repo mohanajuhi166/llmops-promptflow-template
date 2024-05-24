@@ -73,7 +73,7 @@ def register_data_store(
     path = "https://onelake.dfs.fabric.microsoft.com/dataopstest/datalakehousetest.Lakehouse/"
 
     myfile = Data(
-        name="my-file-test-source1",
+        name="my-file-test-source-folder",
         path=path,
         type=AssetTypes.FOLDER
     )
