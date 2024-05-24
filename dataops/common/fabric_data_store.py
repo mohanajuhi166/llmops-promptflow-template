@@ -29,7 +29,8 @@ def get_aml_client(
     client = AIClient(DefaultAzureCredential(),
                       subscription_id=subscription_id,
                       resource_group_name="copilot-microhack",
-                      ai_resource_name="dataops-mango")
+                      ai_resource_name="dataops-mango",
+                      workspace_name="dataops-mango")
 
     #return aml_client
     return client
