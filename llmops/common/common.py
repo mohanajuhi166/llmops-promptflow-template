@@ -31,7 +31,7 @@ def resolve_env_vars(base_path: str) -> Dict:
     Resolve the environment variables from the config files.
 
     :return: The environment variables.
-    :rtype: Dict
+    :type: Dict
     """
     env_vars = {}
     yaml_file_path = os.path.join(base_path,  "environment", "env.yaml")
