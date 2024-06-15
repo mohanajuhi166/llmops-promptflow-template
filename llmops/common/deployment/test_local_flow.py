@@ -57,7 +57,7 @@ def test_local_container_endpoint(flow_name: str):
 
 
 def main():
-    """Main function to test local container endpoint. """
+    """Entry main function to test local container endpoint."""
     parser = argparse.ArgumentParser("test local container endpoint")
     parser.add_argument(
         "--base_path", type=str, help="flow to test", required=True
