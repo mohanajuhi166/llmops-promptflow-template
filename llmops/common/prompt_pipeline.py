@@ -425,7 +425,7 @@ def prepare_and_execute(
                     stream=True,
                 )
             run._experiment_name = experiment.name
-            print(run.name)
+            print(run)
 
             # Execute the run
             logger.info(

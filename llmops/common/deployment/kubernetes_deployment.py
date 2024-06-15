@@ -30,6 +30,8 @@ from azure.ai.ml.entities import (
     Environment,
     OnlineRequestSettings,
     BuildContext,
+    DataCollector,
+    DeploymentCollection
 )
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.entities._deployment.resource_requirements_settings import (
@@ -144,6 +146,18 @@ def create_kubernetes_deployment(
     for elem in endpoint_config["kubernetes_endpoint"]:
         if "ENDPOINT_NAME" in elem and "ENV_NAME" in elem:
             if env_name == elem["ENV_NAME"]:
+                data_collector = DataCollector(
+                    collections={
+                        "model_inputs": DeploymentCollection(
+                            enabled="true",
+                        ),
+                        "model_outputs": DeploymentCollection(
+                            enabled="true",
+                        )
+                    },
+                    sampling_rate=1,
+                )
+                                
                 endpoint_name = elem["ENDPOINT_NAME"]
                 deployment_name = elem["CURRENT_DEPLOYMENT_NAME"]
                 deployment_vm_size = elem["DEPLOYMENT_VM_SIZE"]
@@ -159,6 +173,17 @@ def create_kubernetes_deployment(
                 # ]
                 deployment_desc = elem["DEPLOYMENT_DESC"]
                 environment_variables = dict(elem["ENVIRONMENT_VARIABLES"])
+
+                if os.environ.get(
+                    "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                    None
+                ):
+                    environment_variables[
+                        "APPLICATIONINSIGHTS_CONNECTION_STRING"
+                    ] = (
+                        os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING")
+                    )
+
                 if isinstance(env_vars, dict):
                     if env_vars:
                         for key, value in env_vars.items():
@@ -220,6 +245,7 @@ def create_kubernetes_deployment(
                     request_settings=OnlineRequestSettings(
                         request_timeout_ms=180000
                     ),
+                    data_collector=data_collector,
                     resources=ResourceRequirementsSettings(
                         requests=ResourceSettings(
                             cpu=cpu_allocation,

@@ -77,7 +77,7 @@ class Dataset:
                 ml_client.data.get(name=name, version=version)
             except Exception:
                 raise ValueError(
-                    f"Azure ML dataset {name} not found"
+                    f"dataset {name} not found"
                     f" in workspace {ml_client.workspace_name}"
                 )
             return self.source
@@ -86,7 +86,7 @@ class Dataset:
             ds = ml_client.data.get(name=self.name, label="latest")
         except Exception:
             raise ValueError(
-                f"Azure ML dataset {self.name} not found"
+                f"Dataset {self.name} not found"
                 f" in workspace {ml_client.workspace_name}"
             )
         return f"azureml:{self.name}:{ds.version}"

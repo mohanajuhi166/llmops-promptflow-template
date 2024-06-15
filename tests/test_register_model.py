@@ -24,6 +24,8 @@ def test_register_model():
     model_hash = hash_folder(model_path)
     with patch(
         "llmops.common.deployment.register_model.MLClient"
+        ), patch(
+        "llmops.common.deployment.register_model.AIClient"
     ) as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
