@@ -157,7 +157,7 @@ def create_kubernetes_deployment(
                     },
                     sampling_rate=1,
                 )
-                                
+
                 endpoint_name = elem["ENDPOINT_NAME"]
                 deployment_name = elem["CURRENT_DEPLOYMENT_NAME"]
                 deployment_vm_size = elem["DEPLOYMENT_VM_SIZE"]
