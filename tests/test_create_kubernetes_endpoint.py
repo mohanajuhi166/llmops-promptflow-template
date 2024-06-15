@@ -35,7 +35,6 @@ def test_create_kubernetes_endpoint():
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance
-        SERVICE_TYPE = "AISTUDIO"
         # Create the endpoint
         create_kubernetes_endpoint(env_name, str(RESOURCE_PATH))
 
@@ -43,7 +42,9 @@ def test_create_kubernetes_endpoint():
         # is called once
         if SERVICE_TYPE == "AISTUDIO":
             create_endpoint_calls = (
-                ml_client_instance._ml_client.online_endpoints.begin_create_or_update
+                ml_client_instance._ml_client
+                .online_endpoints
+                .begin_create_or_update
             )
         else:
             create_endpoint_calls = (
