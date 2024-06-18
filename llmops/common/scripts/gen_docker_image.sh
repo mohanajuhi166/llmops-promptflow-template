@@ -100,7 +100,7 @@ if [[ -e "$config_path" ]]; then
 
     docker run $(echo "$docker_args")
 
-    sleep 15
+    sleep 20
 
     docker ps -a
 
