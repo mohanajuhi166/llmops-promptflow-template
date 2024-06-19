@@ -3,7 +3,6 @@ name: run_unit_tests
 on:
   push:
     branches:
-      - main
       - development
       - test-aistudio-unit-tests
     paths:
