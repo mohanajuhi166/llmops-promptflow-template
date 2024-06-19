@@ -23,10 +23,11 @@ def _set_required_env_vars():
     monkeypatch.setenv("RESOURCE_GROUP_NAME", "TEST_RESOURCE_GROUP_NAME")
     monkeypatch.setenv("WORKSPACE_NAME", "TEST_WORKSPACE_NAME")
 
+
 @pytest.fixture
 def mock_ml_client():
-    with patch("llmops.common.deployment.register_model.MLClient") as mock_ml, \
-         patch("llmops.common.deployment.register_model.AIClient") as mock_ai:
+    with patch("llmops.common.deployment.kubernetes_deployment.MLClient") as mock_ml, \
+            patch("llmops.common.deployment.kubernetes_deployment.AIClient") as mock_ai:
         yield mock_ml, mock_ai
 
 

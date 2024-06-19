@@ -23,8 +23,8 @@ def _set_required_env_vars():
 
 @pytest.fixture
 def mock_ml_client():
-    with patch("llmops.common.deployment.register_model.MLClient") as mock_ml, \
-         patch("llmops.common.deployment.register_model.AIClient") as mock_ai:
+    with patch("llmops.common.deployment.provision_deployment.MLClient") as mock_ml, \
+         patch("llmops.common.deployment.provision_deployment.AIClient") as mock_ai:
         yield mock_ml, mock_ai
 
 
