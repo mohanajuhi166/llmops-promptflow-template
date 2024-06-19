@@ -61,9 +61,9 @@ def test_register_existing_model():
     """Test register_model with an existing model."""
     model_path = str(RESOURCE_PATH / "flows/exp_flow")
     model_hash = hash_folder(model_path)
-    with patch(
-        "llmops.common.deployment.register_model.MLClient"
-    ), patch("llmops.common.deployment.register_model.AIClient") as mock_ml_client:
+    mock_ml_client = Mock()
+    with patch("llmops.common.deployment.register_model.MLClient", mock_ml_client), \
+            patch("llmops.common.deployment.register_model.AIClient", mock_ml_client):
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance
