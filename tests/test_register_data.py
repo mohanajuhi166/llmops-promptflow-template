@@ -69,6 +69,7 @@ def test_register_existing_data_asset(self, mock_ai_client, mock_ml_client):
 
     # Mock the MLClient
     ml_client_instance = Mock()
+    mock_ml_client = Mock()
     mock_ml_client.return_value = ml_client_instance
 
     # Mock available data asset
