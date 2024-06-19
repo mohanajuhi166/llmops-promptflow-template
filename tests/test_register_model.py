@@ -59,8 +59,8 @@ def test_register_model():
 
 @pytest.fixture
 def mock_ml_client():
-    with patch("llmops.common.register_model.MLClient") as mock_ml, \
-         patch("llmops.common.register_model.AIClient") as mock_ai:
+    with patch("llmops.common.deployment.register.MLClient") as mock_ml, \
+         patch("llmops.common.deployment.register.AIClient") as mock_ai:
         yield mock_ml, mock_ai
 
 
