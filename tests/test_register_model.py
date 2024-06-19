@@ -57,24 +57,30 @@ def test_register_model():
         assert created_model.tags["model_hash"] == model_hash
 
 
-def test_register_existing_model():
+@pytest.fixture
+def mock_ml_client():
+    with patch("llmops.common.deployment.register_model.MLClient") as mock_ml, \
+         patch("llmops.common.deployment.register_model.AIClient") as mock_ai:
+        yield mock_ml, mock_ai
+
+
+def test_register_existing_model(mock_ai_client):
     """Test register_model with an existing model."""
     model_path = str(RESOURCE_PATH / "flows/exp_flow")
     model_hash = hash_folder(model_path)
+
+    # Mock the MLClient
+    ml_client_instance = Mock()
     mock_ml_client = Mock()
-    with patch("llmops.common.deployment.register_model.AIClient", mock_ml_client), \
-            patch("llmops.common.deployment.register_model.MLClient", mock_ml_client):
-        # Mock the MLClient
-        ml_client_instance = Mock()
-        mock_ml_client.return_value = ml_client_instance
+    mock_ml_client.return_value = ml_client_instance
 
-        # Mock available model
-        mock_model = Mock()
-        mock_model.tags = {"model_hash": model_hash}
-        ml_client_instance.models.get.return_value = mock_model
+    # Mock available model
+    mock_model = Mock()
+    mock_model.tags = {"model_hash": model_hash}
+    ml_client_instance.models.get.return_value = mock_model
 
-        # Register model
-        register_model(base_path=str(RESOURCE_PATH), env_name="dev")
+    # Register model
+    register_model(base_path=str(RESOURCE_PATH), env_name="dev")
 
-        # Assert that ml_client.models.create_or_update is not called
-        ml_client_instance.models.create_or_update.assert_not_called()
+    # Assert that ml_client.models.create_or_update is not called
+    ml_client_instance.models.create_or_update.assert_not_called()

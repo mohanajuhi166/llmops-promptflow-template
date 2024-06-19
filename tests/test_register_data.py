@@ -60,9 +60,14 @@ def test_register_data_asset():
         assert created_data.tags["data_hash"] == data_hash
 
 
-@patch("llmops.common.register_data_asset.MLClient")
-@patch("llmops.common.register_data_asset.AIClient")
-def test_register_existing_data_asset(self, mock_ai_client, mock_ml_client):
+@pytest.fixture
+def mock_ml_client():
+    with patch("llmops.common.deployment.register_model.MLClient") as mock_ml, \
+         patch("llmops.common.deployment.register_model.AIClient") as mock_ai:
+        yield mock_ml, mock_ai
+
+
+def test_register_existing_data_asset(mock_ml_client):
     """Test register_data_asset with an existing data asset."""
     data_path = str(RESOURCE_PATH / "data/data.jsonl")
     data_hash = generate_file_hash(data_path)
