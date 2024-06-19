@@ -64,10 +64,8 @@ def test_register_existing_data_asset():
     data_path = str(RESOURCE_PATH / "data/data.jsonl")
     data_hash = generate_file_hash(data_path)
     with patch(
-            "azure.ai.ml.MLClient"
-    ), patch(
-        "azure.ai.resources.client.AIClient"
-    ) as mock_ml_client:
+        "llmops.common.register_data_asset.MLClient"
+        )as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance

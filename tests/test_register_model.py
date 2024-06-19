@@ -62,9 +62,7 @@ def test_register_existing_model():
     model_path = str(RESOURCE_PATH / "flows/exp_flow")
     model_hash = hash_folder(model_path)
     with patch(
-            "azure.ai.ml.MLClient"
-    ), patch(
-        "azure.ai.resources.client.AIClient"
+        "llmops.common.deployment.register_model.MLClient"
     ) as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
