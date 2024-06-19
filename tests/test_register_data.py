@@ -64,11 +64,9 @@ def test_register_existing_data_asset():
     """Test register_data_asset with an existing data asset."""
     data_path = str(RESOURCE_PATH / "data/data.jsonl")
     data_hash = generate_file_hash(data_path)
-    with patch(
-        "llmops.common.register_data_asset.MLClient"
-        ), patch(
-        "llmops.common.register_data_asset.AIClient"
-    ) as mock_ml_client:
+    mock_ml_client = Mock()
+    with patch("llmops.common.register_data_asset.MLClient", mock_ml_client), \
+            patch("llmops.common.register_data_asset.AIClient", mock_ml_client):
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance

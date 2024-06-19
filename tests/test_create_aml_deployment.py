@@ -37,11 +37,9 @@ def test_create_kubernetes_deployment():
         "scoring_route": {"path": "/score", "port": "8080"},
     }
 
-    with patch(
-        "llmops.common.deployment.provision_deployment.MLClient"
-    ), patch(
-        "llmops.common.deployment.provision_deployment.AIClient"
-    ) as mock_ml_client:
+    mock_ml_client = Mock ()
+    with patch("llmops.common.deployment.provision_deployment.MLClient", mock_ml_client), \
+            patch("llmops.common.deployment.provision_deployment.AIClient", mock_ml_client):
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance
