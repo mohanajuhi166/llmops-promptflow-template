@@ -62,8 +62,8 @@ def test_register_data_asset():
 
 @pytest.fixture
 def mock_ml_client():
-    with patch("llmops.common.deployment.register_data_asset.MLClient") as mock_ml, \
-         patch("llmops.common.deployment.register_data_asset.AIClient") as mock_ai:
+    with patch("llmops.common.register_data_asset.MLClient") as mock_ml, \
+         patch("llmops.common.register_data_asset.AIClient") as mock_ai:
         yield mock_ml, mock_ai
 
 
