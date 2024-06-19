@@ -60,28 +60,28 @@ def test_register_data_asset():
         assert created_data.tags["data_hash"] == data_hash
 
 
-def test_register_existing_data_asset():
+@patch("llmops.common.register_data_asset.MLClient")
+@patch("llmops.common.register_data_asset.AIClient")
+def test_register_existing_data_asset(self, mock_ai_client, mock_ml_client):
     """Test register_data_asset with an existing data asset."""
     data_path = str(RESOURCE_PATH / "data/data.jsonl")
     data_hash = generate_file_hash(data_path)
-    mock_ml_client = Mock()
-    with patch("llmops.common.register_data_asset.MLClient", mock_ml_client), \
-            patch("llmops.common.register_data_asset.AIClient", mock_ml_client):
-        # Mock the MLClient
-        ml_client_instance = Mock()
-        mock_ml_client.return_value = ml_client_instance
 
-        # Mock available data asset
-        mock_data = Mock()
-        mock_data.tags = {"data_hash": data_hash}
-        ml_client_instance.data.get.return_value = mock_data
+    # Mock the MLClient
+    ml_client_instance = Mock()
+    mock_ml_client.return_value = ml_client_instance
 
-        # Register data asset
-        register_data_asset(
-            exp_filename="experiment_2.yaml",
-            base_path=str(RESOURCE_PATH),
-            env_name="dev",
-        )
+    # Mock available data asset
+    mock_data = Mock()
+    mock_data.tags = {"data_hash": data_hash}
+    ml_client_instance.data.get.return_value = mock_data
 
-        # Assert that ml_client.data.create_or_update is not called
-        ml_client_instance.data.create_or_update.assert_not_called()
+    # Register data asset
+    register_data_asset(
+        exp_filename="experiment_2.yaml",
+        base_path=str(RESOURCE_PATH),
+        env_name="dev",
+    )
+
+    # Assert that ml_client.data.create_or_update is not called
+    ml_client_instance.data.create_or_update.assert_not_called()
