@@ -9,4 +9,4 @@ It contains the following configuration:
 """
 
 EXECUTION_TYPE = "AZURE"
-SERVICE_TYPE = "AISTUDIO"
+SERVICE_TYPE = "AML"
