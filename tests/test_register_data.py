@@ -3,6 +3,8 @@ from pathlib import Path
 from unittest.mock import ANY, Mock, patch
 
 import pytest
+
+from llmops.common.MLWrapperClient import MLWrapperClient
 from llmops.common.register_data_asset import (
     register_data_asset,
     generate_file_hash
@@ -63,9 +65,7 @@ def test_register_existing_data_asset():
     """Test register_data_asset with an existing data asset."""
     data_path = str(RESOURCE_PATH / "data/data.jsonl")
     data_hash = generate_file_hash(data_path)
-    with patch(
-        "llmops.common.register_data_asset.MLClient"
-        )as mock_ml_client:
+    with patch.object(MLWrapperClient, 'get_ml_client') as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance

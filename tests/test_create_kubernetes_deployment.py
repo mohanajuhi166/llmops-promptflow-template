@@ -3,6 +3,8 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 import pytest
+
+from llmops.common.MLWrapperClient import MLWrapperClient
 from llmops.common.deployment.kubernetes_deployment import (
     create_kubernetes_deployment
 )
@@ -42,9 +44,7 @@ def test_create_kubernetes_deployment():
         "scoring_route": {"path": "/score", "port": "8080"},
     }
 
-    with patch(
-        "llmops.common.deployment.kubernetes_deployment.MLClient"
-        ) as mock_ml_client:
+    with patch.object(MLWrapperClient, 'get_ml_client') as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance
