@@ -63,7 +63,7 @@ def test_register_existing_model():
     model_hash = hash_folder(model_path)
     with patch(
         "llmops.common.deployment.register_model.MLClient"
-    ) as mock_ml_client:
+    ), patch("llmops.common.deployment.register_model.AIClient") as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance
