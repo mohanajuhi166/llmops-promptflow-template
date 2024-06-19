@@ -3,6 +3,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 from pathlib import Path
+
+from llmops.common.MLWrapperClient import MLWrapperClient
 from llmops.common.deployment.provision_endpoint import (
     create_endpoint,
     SERVICE_TYPE
@@ -26,11 +28,7 @@ def test_create_provision_endpoint():
     env_name = "dev"
     endpoint_name = "test-endpoint"
     endpoint_description = "test-endpoint-description"
-    with patch(
-        "llmops.common.deployment.provision_endpoint.MLClient"
-        ), patch(
-        "llmops.common.deployment.provision_endpoint.AIClient"
-    ) as mock_ml_client:
+    with patch.object(MLWrapperClient, 'get_ml_client') as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance

@@ -24,11 +24,7 @@ def test_register_model():
     """Test register_model."""
     model_path = str(RESOURCE_PATH / "flows/exp_flow")
     model_hash = hash_folder(model_path)
-    with patch(
-        "llmops.common.deployment.register_model.MLClient"
-        ), patch(
-        "llmops.common.deployment.register_model.AIClient"
-    ) as mock_ml_client:
+    with patch.object(MLWrapperClient, 'get_ml_client') as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance

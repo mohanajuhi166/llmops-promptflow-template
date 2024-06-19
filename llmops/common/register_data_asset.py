@@ -22,6 +22,7 @@ from azure.ai.ml.entities import Data as AMLData
 from azure.ai.ml.constants import AssetTypes as AMLAssetTypes
 from azure.identity import DefaultAzureCredential
 
+from llmops.common.MLWrapperClient import MLWrapperClient
 from llmops.config import SERVICE_TYPE
 from azure.ai.resources.client import AIClient
 from azure.ai.resources.entities import Data as StudioData
@@ -66,20 +67,7 @@ def register_data_asset(
         filename=exp_filename, base_path=base_path, env=config.environment_name
     )
 
-    if SERVICE_TYPE == "AISTUDIO":
-        ml_client = AIClient(
-            subscription_id=config.subscription_id,
-            resource_group_name=config.resource_group_name,
-            project_name=config.workspace_name,
-            credential=DefaultAzureCredential(),
-        )
-    else:
-        ml_client = MLClient(
-            DefaultAzureCredential(),
-            config.subscription_id,
-            config.resource_group_name,
-            config.workspace_name,
-        )
+    ml_client = MLWrapperClient(config, SERVICE_TYPE).get_ml_client()
 
     # Get all used datasets
     all_datasets = {ds.dataset.name: ds.dataset for ds in experiment.datasets}

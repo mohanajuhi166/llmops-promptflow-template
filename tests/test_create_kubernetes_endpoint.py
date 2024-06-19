@@ -3,6 +3,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 from pathlib import Path
+
+from llmops.common.MLWrapperClient import MLWrapperClient
 from llmops.common.deployment.kubernetes_endpoint import (
     create_kubernetes_endpoint,
     SERVICE_TYPE
@@ -27,11 +29,7 @@ def test_create_kubernetes_endpoint():
     endpoint_name = "k8s-test-endpoint"
     endpoint_description = "k8s-test-endpoint-description"
     compute_name = "k8s-compute"
-    with patch(
-        "llmops.common.deployment.kubernetes_endpoint.MLClient"
-        ), patch(
-        "llmops.common.deployment.kubernetes_endpoint.AIClient"
-    ) as mock_ml_client:
+    with patch.object(MLWrapperClient, 'get_ml_client') as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance
