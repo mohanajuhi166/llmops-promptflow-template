@@ -35,7 +35,7 @@ from azure.ai.ml.entities import (
 from azure.identity import DefaultAzureCredential
 from dotenv import load_dotenv
 
-
+from llmops.common.MLWrapperClient import MLWrapperClient
 from llmops.common.logger import llmops_logger
 from llmops.common.experiment_cloud_config import ExperimentCloudConfig
 from llmops.common.experiment import load_experiment
@@ -121,21 +121,7 @@ def create_deployment(
 
     logger.info(f"Model name: {model_name}")
 
-    if SERVICE_TYPE == "AISTUDIO":
-        ml_client = AIClient(
-            subscription_id=config.subscription_id,
-            resource_group_name=config.resource_group_name,
-            project_name=config.workspace_name,
-            credential=DefaultAzureCredential(),
-        )
-    else:
-        ml_client = MLClient(
-            DefaultAzureCredential(),
-            config.subscription_id,
-            config.resource_group_name,
-            config.workspace_name,
-        )
-
+    ml_client = MLWrapperClient(config, SERVICE_TYPE).get_ml_client()
     model = ml_client.models.get(model_name, model_version)
 
     config_file = open(real_config)
