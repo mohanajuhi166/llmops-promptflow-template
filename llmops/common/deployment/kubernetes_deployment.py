@@ -130,7 +130,7 @@ def create_kubernetes_deployment(
             resource_group_name=config.resource_group_name,
             project_name=config.workspace_name,
             credential=DefaultAzureCredential(),
-        )._ml_client
+        )
     else:
         ml_client = MLClient(
             DefaultAzureCredential(),

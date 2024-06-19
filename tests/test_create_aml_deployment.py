@@ -39,6 +39,8 @@ def test_create_kubernetes_deployment():
 
     with patch(
         "llmops.common.deployment.provision_deployment.MLClient"
+    ), patch(
+        "llmops.common.deployment.provision_deployment.AIClient"
     ) as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
