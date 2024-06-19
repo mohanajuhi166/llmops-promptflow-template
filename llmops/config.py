@@ -9,7 +9,4 @@ It contains the following configuration:
 """
 
 EXECUTION_TYPE = "AZURE"
-<<<<<<< HEAD
-=======
 SERVICE_TYPE = "AISTUDIO"
->>>>>>> bd80235bca77d1275c42a4538dbf61f595fd76df
