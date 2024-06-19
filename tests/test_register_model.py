@@ -64,7 +64,7 @@ def mock_ml_client():
         yield mock_ml, mock_ai
 
 
-def test_register_existing_model(mock_ai_client):
+def test_register_existing_model(mock_ml_client):
     """Test register_model with an existing model."""
     model_path = str(RESOURCE_PATH / "flows/exp_flow")
     model_hash = hash_folder(model_path)
