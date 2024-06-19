@@ -44,6 +44,8 @@ def test_create_kubernetes_deployment():
 
     with patch(
         "llmops.common.deployment.kubernetes_deployment.MLClient"
+        ), patch(
+        "llmops.common.deployment.kubernetes_deployment.AIClient"
     ) as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
@@ -115,7 +117,7 @@ def test_create_kubernetes_deployment():
             deployment_config
         )
 
-        assert created_deployment.request_settings.request_timeout_ms == 90000
+        assert created_deployment.request_settings.request_timeout_ms == 180000
         assert created_deployment.resources.requests.cpu == deployment_cpu
         assert created_deployment.resources.requests.memory == deployment_mem
 

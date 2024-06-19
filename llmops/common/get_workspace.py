@@ -6,7 +6,7 @@ Args:
 This argument is required for identifying the Azure subscription.
 --resource_group_name: The name of the resource group associated with
 AML workspace.
---workspace_name: The AML workspace name.
+--workspace_name: The service in Azure.
 """
 
 import argparse

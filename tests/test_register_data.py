@@ -1,3 +1,4 @@
+
 """Tests for the register_data_asset module."""
 from pathlib import Path
 from unittest.mock import ANY, Mock, patch
@@ -7,6 +8,7 @@ from llmops.common.register_data_asset import (
     register_data_asset,
     generate_file_hash
 )
+
 THIS_PATH = Path(__file__).parent
 RESOURCE_PATH = THIS_PATH / "resources"
 
@@ -23,8 +25,13 @@ def _set_required_env_vars():
 def test_register_data_asset():
     """Test register_data_asset."""
     data_path = str(RESOURCE_PATH / "data/data.jsonl")
+
     data_hash = generate_file_hash(data_path)
-    with patch("llmops.common.register_data_asset.MLClient") as mock_ml_client:
+    with patch(
+        "llmops.common.register_data_asset.MLClient"
+        ), patch(
+        "llmops.common.register_data_asset.AIClient"
+    ) as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance
@@ -57,7 +64,11 @@ def test_register_existing_data_asset():
     """Test register_data_asset with an existing data asset."""
     data_path = str(RESOURCE_PATH / "data/data.jsonl")
     data_hash = generate_file_hash(data_path)
-    with patch("llmops.common.register_data_asset.MLClient") as mock_ml_client:
+    with patch(
+        "llmops.common.register_data_asset.MLClient"
+        ), patch(
+        "llmops.common.register_data_asset.AIClient"
+    ) as mock_ml_client:
         # Mock the MLClient
         ml_client_instance = Mock()
         mock_ml_client.return_value = ml_client_instance

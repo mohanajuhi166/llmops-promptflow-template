@@ -42,7 +42,8 @@ env_var_file_path="./$use_case_base_path/environment/env.yaml"
 source .env
 . .env
 if [[ -e "$config_path" ]]; then
-    STANDARD_FLOW=$(yq eval '.flow // .name' "$config_path")
+    #STANDARD_FLOW=$(yq eval '.flow // .name' "$config_path")
+    STANDARD_FLOW=$(yq '.flow' "$config_path" |  sed 's/"//g')
 
     init_file_path="./$use_case_base_path/$STANDARD_FLOW/flow.flex.yaml"
 
@@ -60,14 +61,14 @@ if [[ -e "$config_path" ]]; then
  
 
     pip install -r ./$use_case_base_path/$STANDARD_FLOW/requirements.txt
-    pf flow build --source "./$use_case_base_path/$STANDARD_FLOW" --output "./$use_case_base_path/docker"  --format docker 
+    pf flow build --source "./$use_case_base_path/$STANDARD_FLOW" --output "./$use_case_base_path/docker"  --format docker
 
     cp "./$use_case_base_path/environment/Dockerfile" "./$use_case_base_path/docker/Dockerfile"
-   
+
     python -m llmops.common.deployment.migrate_connections --base_path $use_case_base_path --env_name $deploy_environment
     # docker build the prompt flow based image
-    docker build --platform=linux/amd64 -t localpf "./$use_case_base_path/docker" 
-        
+    docker build --platform=linux/amd64 -t localpf "./$use_case_base_path/docker"
+
     docker images
 
     deploy_config="./$use_case_base_path/configs/deployment_config.json"
@@ -92,13 +93,14 @@ if [[ -e "$config_path" ]]; then
     if [ -n "$env_output" ]; then
         docker_args+=" $env_output"
     fi
-    
+
+    docker_args+=" -e PROMPTFLOW_SERVING_ENGINE=fastapi "
     docker_args+=" -m 512m --memory-reservation=256m --cpus=2 -dp 8080:8080 localpf:latest"
     echo "$docker_args"
 
     docker run $(echo "$docker_args")
 
-    sleep 15
+    sleep 20
 
     docker ps -a
 

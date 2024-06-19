@@ -49,7 +49,8 @@ acr_rg=$(echo "$con_object" | jq -r '.REGISTRY_RG_NAME')
 websku=$(echo "$con_object" | jq -r '.WEB_APP_SKU')
 
 config_path="./$use_case_base_path/experiment.yaml"
-STANDARD_FLOW=$(yq eval '.flow // .name' "$config_path")
+#STANDARD_FLOW=$(yq eval '.flow // .name' "$config_path")
+STANDARD_FLOW=$(yq '.flow' "$config_path" |  sed 's/"//g')
 init_file_path="./$use_case_base_path/$STANDARD_FLOW/flow.flex.yaml"
 
 init_output=()
@@ -69,17 +70,17 @@ read -r -a connection_names <<< "$(echo "$con_object" | jq -r '.CONNECTION_NAMES
 # create a resource group
 az group create --name $rgname --location westeurope
 
-# create a user managed identifier      
+# create a user managed identifier
 az identity create --name $udmid --resource-group $rgname
 sleep 15
-      
+
 principalId=$(az identity show --resource-group $rgname \
     --name $udmid --query principalId --output tsv)
-      
+
 registryId=$(az acr show --resource-group $acr_rg \
     --name $REGISTRY_NAME --query id --output tsv)
 
-# provide permissions to user managed identifier      
+# provide permissions to user managed identifier
 az role assignment create --assignee $principalId --scope $registryId --role "AcrPull"
 az appservice plan create --name $appserviceplan --resource-group $rgname --is-linux --sku $websku
 
@@ -132,7 +133,12 @@ do
     echo "$element"
 done
 
-# Assign user managed identifier to Web APp
+az webapp config appsettings set \
+        --resource-group $rgname \
+        --name $appserviceweb \
+        --settings PROMPTFLOW_SERVING_ENGINE=fastapi
+
+# Assign user managed identifier to Web APP
 id=$(az identity show --resource-group $rgname --name $udmid --query id --output tsv)
 
 az webapp identity assign --resource-group $rgname --name $appserviceweb --identities $id
