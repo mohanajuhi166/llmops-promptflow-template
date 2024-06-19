@@ -13,7 +13,7 @@ This template supports different types of flows, allowing you to define and exec
     - Function based flows (python functions)
     - Class based flows (python classes)
 
-- Directed Acyclic Graph (DAG.) Flows
+- Directed Acyclic Graph (DAG) Flows
     - YAML based flows
 
 One of the powerful features of this project is its ability to automatically detect the flow type based on the presence of the flow.flex.yaml or flow.dag.yaml file in the flows directory.
