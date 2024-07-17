@@ -12,7 +12,7 @@ import os
 import argparse
 import json
 
-from azure.storage.filedatalake import DataLakeServiceClient, DataLakeDirectoryClient
+from azure.storage.filedatalake import DataLakeServiceClient, DataLakeDirectoryClient, FileSystemClient
 
 pipeline_components = []
 
@@ -86,12 +86,12 @@ def register_data_store(
 
     # List a directory within the filesystem
     paths = file_system_client.get_paths(path=DATA_PATH)
-    file_system_client.create_file(file="test.txt")
 
     for path in paths:
         print(path.name + '\n')
 
-    upload_file_to_directory(file_system_client, "dataops/common", "test.txt")
+    directory_client = file_system_client.GetDirectoryClient("datalakehousetest.Lakehouse/Files/data/text.txt")
+    upload_file_to_directory(directory_client, "dataops/common", "test.txt")
 
     ## AI Client
 
@@ -110,7 +110,12 @@ def upload_file_to_directory(directory_client: DataLakeDirectoryClient, local_pa
     file_client = directory_client.get_file_client(file_name)
 
     with open(file=os.path.join(local_path, file_name), mode="rb") as data:
-        file_client.upload_data("hello", overwrite=True)
+        file_client.upload_data(data, overwrite=True)
+
+
+def create_directory_client(self, file_system_client: FileSystemClient, path: str):
+    directory_client = file_system_client.GetDirectoryClient(path)
+    return directory_client
 
 
 def main():
