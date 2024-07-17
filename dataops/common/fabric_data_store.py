@@ -90,7 +90,7 @@ def register_data_store(
     for path in paths:
         print(path.name + '\n')
 
-    upload_file_to_directory(file_system_client, "dataops/common", "test.csv")
+    upload_file_to_directory(file_system_client, "dataops/common", "test.txt")
 
     ## AI Client
 
