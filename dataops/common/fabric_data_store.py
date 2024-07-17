@@ -1,6 +1,8 @@
 """
 This module registers the data store.
 """
+import io
+
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential, ClientSecretCredential
 from azure.ai.ml.entities import OneLakeDatastore, \
@@ -109,7 +111,22 @@ def upload_file_to_directory(directory_client: DataLakeDirectoryClient, local_pa
     file_client = directory_client.get_file_client(file_name)
 
     with open(file=os.path.join(local_path, file_name), mode="rb") as data:
-        file_client.upload_data(data, overwrite=True)
+        csv_data = [
+            ['name', 'age'],
+            ['Alice', '23'],
+            ['Bob', '29']
+        ]
+
+        # Convert CSV data to a CSV string
+        csv_string = '\n'.join([','.join(row) for row in csv_data])
+
+        # Convert the CSV string to bytes using UTF-8 encoding
+        csv_bytes = csv_string.encode('utf-8')
+
+        # Create a BytesIO object from the bytes
+        csv_bytes_io = io.BytesIO(csv_bytes)
+
+        file_client.upload_data(csv_bytes_io, overwrite=True)
 
 
 def main():
