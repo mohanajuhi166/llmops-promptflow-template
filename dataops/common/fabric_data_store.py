@@ -90,7 +90,7 @@ def register_data_store(
     for path in paths:
         print(path.name + '\n')
 
-    file_client = service_client.get_file_client("datalakehousetest.Lakehouse/Files/")
+    file_client = service_client.get_file_client(file_path="datalakehousetest.Lakehouse/Files/")
     file_client.create_file(file="text.txt")
     #upload_file_to_directory(file_system_client, "dataops/common", "test.txt")
 
