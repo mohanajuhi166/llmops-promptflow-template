@@ -44,7 +44,6 @@ def register_data_store(
         onelake_workspace_name,
         onelake_endpoint,
         onelake_artifact_name,
-        aml_client,
         client_id,
         client_secret
 ):
@@ -172,11 +171,11 @@ def main():
     onelake_endpoint = onelake_config['ENDPOINT']
     onelake_artifact_name = onelake_config['ARTIFACT_NAME']
 
-    aml_client = get_aml_client(
-        subscription_id,
-        resource_group_name,
-        workspace_name,
-    )
+    # aml_client = get_aml_client(
+    #     subscription_id,
+    #     resource_group_name,
+    #     workspace_name,
+    # )
 
     register_data_store(
         name_datastore=config["DATA_STORE_NAME"],
@@ -184,7 +183,7 @@ def main():
         onelake_workspace_name=onelake_workspace_name,
         onelake_endpoint=onelake_endpoint,
         onelake_artifact_name=onelake_artifact_name,
-        aml_client=aml_client,
+        #aml_client=aml_client,
         client_id=client_id,
         client_secret=client_secret
     )
