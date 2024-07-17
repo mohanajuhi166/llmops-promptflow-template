@@ -90,7 +90,7 @@ def register_data_store(
     for path in paths:
         print(path.name + '\n')
 
-    upload_file_to_directory(file_system_client, "data", "test.csv")
+    upload_file_to_directory(file_system_client, "dataops/common", "test.csv")
 
     ## AI Client
 
@@ -105,7 +105,7 @@ def register_data_store(
     # aml_client.data.create_or_update(myfile)
 
 
-def upload_file_to_directory(self, directory_client: DataLakeDirectoryClient, local_path: str, file_name: str):
+def upload_file_to_directory(directory_client: DataLakeDirectoryClient, local_path: str, file_name: str):
     file_client = directory_client.get_file_client(file_name)
 
     with open(file=os.path.join(local_path, file_name), mode="rb") as data:
