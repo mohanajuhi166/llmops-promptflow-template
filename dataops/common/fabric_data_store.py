@@ -86,7 +86,7 @@ def register_data_store(
 
     # List a directory within the filesystem
     paths = file_system_client.get_paths(path=DATA_PATH)
-    file_system_client.create_file(file="test.txt", content="hello world")
+    file_system_client.create_file(file="test.txt", type="hello world")
 
     for path in paths:
         print(path.name + '\n')
