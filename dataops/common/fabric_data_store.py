@@ -90,9 +90,8 @@ def register_data_store(
     for path in paths:
         print(path.name + '\n')
 
-    directory_client = service_client.get_file_system_client("datalakehousetest.Lakehouse/Files/data")
-    directory_client.create_directory("common")
-    upload_file_to_directory(directory_client, "dataops/common", "test.txt")
+    file_system_client.create_directory("common")
+    upload_file_to_directory(file_system_client, "dataops/common", "test.txt")
 
     ## AI Client
 
