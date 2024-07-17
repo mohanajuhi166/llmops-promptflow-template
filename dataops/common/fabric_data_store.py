@@ -12,7 +12,10 @@ import os
 import argparse
 import json
 
+from azure.storage.filedatalake import DataLakeServiceClient, DataLakeDirectoryClient
+
 pipeline_components = []
+
 
 def get_aml_client(
         subscription_id,
@@ -34,6 +37,7 @@ def get_aml_client(
     #return aml_client
     return client
 
+
 def register_data_store(
         name_datastore,
         description,
@@ -44,13 +48,12 @@ def register_data_store(
         client_id,
         client_secret
 ):
-
     #credentials_dict = json.loads(credentials)
 
     # Extract the client_id, client_secret and tenant_id
     #client_id = credentials_dict.get('clientId')
     #client_secret = credentials_dict.get('clientSecret')
-    #tenant_id = "3c863c9b-2221-4236-88c3-37fe9e1d06f8"
+    tenant_id = "3c863c9b-2221-4236-88c3-37fe9e1d06f8"
 
     # store = OneLakeDatastore(
     #     name=name_datastore,
@@ -68,17 +71,49 @@ def register_data_store(
     #
     # aml_client.create_or_update(store)
 
+    ## upload file
+    WORKSPACE_NAME = "dataopstest"
+    DATA_PATH = "datalakehousetest.Lakehouse/Files/"
+
+    # Create a service client using the default Azure credential
+
+    account_url = f"https://onelake.dfs.fabric.microsoft.com"
+    #token_credential = DefaultAzureCredential()
+    sp_token  = ServicePrincipalConfiguration(client_id=client_id,
+                                                           client_secret=client_secret,
+                                                           tenant_id=tenant_id)
+    service_client = DataLakeServiceClient(account_url, credential=sp_token)
+
+    # Create a file system client for the workspace
+    file_system_client = service_client.get_file_system_client(WORKSPACE_NAME)
+
+    # List a directory within the filesystem
+    paths = file_system_client.get_paths(path=DATA_PATH)
+
+    for path in paths:
+        print(path.name + '\n')
+
+    upload_file_to_directory(file_system_client, "data", "test.csv")
+
     ## AI Client
 
-    path = "azureml://subscriptions/78479cb4-e81a-4926-8c84-fa9c7784069b/resourcegroups/copilot-microhack/workspaces/dataops-mango/datastores/onelake_test1/paths/source.csv"
+    # path = "azureml://subscriptions/78479cb4-e81a-4926-8c84-fa9c7784069b/resourcegroups/copilot-microhack/workspaces/dataops-mango/datastores/onelake_test1/paths/source.csv"
+    #
+    # myfile = Data(
+    #     name="my-file-test-source-plz",
+    #     path=path,
+    #     type=AssetTypes.FILE
+    # )
+    #
+    # aml_client.data.create_or_update(myfile)
 
-    myfile = Data(
-        name="my-file-test-source-plz",
-        path=path,
-        type=AssetTypes.FILE
-    )
 
-    aml_client.data.create_or_update(myfile)
+def upload_file_to_directory(self, directory_client: DataLakeDirectoryClient, local_path: str, file_name: str):
+    file_client = directory_client.get_file_client(file_name)
+
+    with open(file=os.path.join(local_path, file_name), mode="rb") as data:
+        file_client.upload_data(data, overwrite=True)
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -148,11 +183,12 @@ def main():
         description=config["DATA_STORE_DESCRIPTION"],
         onelake_workspace_name=onelake_workspace_name,
         onelake_endpoint=onelake_endpoint,
-        onelake_artifact_name = onelake_artifact_name,
+        onelake_artifact_name=onelake_artifact_name,
         aml_client=aml_client,
         client_id=client_id,
         client_secret=client_secret
     )
+
 
 if __name__ == "__main__":
     main()
