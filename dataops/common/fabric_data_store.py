@@ -90,7 +90,7 @@ def register_data_store(
     for path in paths:
         print(path.name + '\n')
 
-    upload_file_to_directory(file_system_client, "dataops/common/test.txt", "test")
+    upload_file_to_directory(file_system_client, "dataops/common", "test.txt")
 
     ## AI Client
 
@@ -109,7 +109,7 @@ def upload_file_to_directory(directory_client: DataLakeDirectoryClient, local_pa
     file_client = directory_client.get_file_client(file_name)
 
     with open(file=os.path.join(local_path, file_name), mode="rb") as data:
-        file_client.upload_data(data, overwrite=True)
+        file_client.upload_data("hello", overwrite=True)
 
 
 def main():
