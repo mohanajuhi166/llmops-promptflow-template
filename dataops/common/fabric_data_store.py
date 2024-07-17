@@ -2,7 +2,7 @@
 This module registers the data store.
 """
 from azure.ai.ml import MLClient
-from azure.identity import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential, ClientSecretCredential
 from azure.ai.ml.entities import OneLakeDatastore, \
     OneLakeArtifact, ServicePrincipalConfiguration
 from azure.ai.resources.client import AIClient
@@ -78,10 +78,8 @@ def register_data_store(
 
     account_url = f"https://onelake.dfs.fabric.microsoft.com"
     #token_credential = DefaultAzureCredential()
-    sp_token  = ServicePrincipalConfiguration(client_id=client_id,
-                                                           client_secret=client_secret,
-                                                           tenant_id=tenant_id)
-    service_client = DataLakeServiceClient(account_url, credential=sp_token)
+    sp_token = ClientSecretCredential(tenant_id=tenant_id, client_id=client_id, client_secret=client_secret);
+    service_client = DataLakeServiceClient(account_url, sp_token)
 
     # Create a file system client for the workspace
     file_system_client = service_client.get_file_system_client(WORKSPACE_NAME)
